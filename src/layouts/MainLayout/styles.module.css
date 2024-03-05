@@ -1,0 +1,9 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* background-color: #fff; */
+}
+.wrapper {
+  margin-top: 30px;
+}
