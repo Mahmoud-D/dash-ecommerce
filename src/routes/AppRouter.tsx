@@ -8,11 +8,14 @@ import Login from '@pages/Login'
 import Categories from '@pages/Categories'
 import Register from '@pages/Register'
 import Products from '@pages/Products'
+import Error from '@pages/Error'
+
 const AppRouter = () => {
   const router = createBrowserRouter([
     {
       path: '/',
       element: <MainLayout />,
+      errorElement: <Error />,
       children: [
         {
           index: true,
