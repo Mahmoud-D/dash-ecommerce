@@ -27,7 +27,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@util/*": ["src/util/*"],
       "@services/*": ["src/services/*"],
-      "@eCommerce/*": ["src/components/eCommerce/*"]
+      "@eCommerce/*": ["src/components/eCommerce/*"],
+      "@customTypes/*": ["src/types/*"]
     },
     /* Linting */
 
