@@ -1,44 +1,33 @@
 import { useEffect } from 'react'
-
 import { useAppDispatch, useAppSelector } from '@store/hooks'
 import actGetCategories from '@store/categories/actGetCategories'
 
 import Category from '../components/eCommerce/category/Category'
-import { Loading } from '@components/fedback'
+import GridList from '@components/common/GridList/GridList'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import Loading from '@components/fedback/Loading/Loading'
+
+import { TCategory } from '@customTypes/category'
 
 const Categories = () => {
   const dispatch = useAppDispatch()
-
   const { loading, error, categories } = useAppSelector(
     (state) => state.categories
   )
 
   useEffect(() => {
-    dispatch(actGetCategories())
-  }, [dispatch])
-
-  const categoriesList =
-    categories.length > 0
-      ? categories.map((cat) => (
-          <Col
-            xs={6}
-            md={3}
-            key={cat.id}
-            className="d-flex justify-content-center mb-5 mt-2"
-          >
-            <Category {...cat} />
-          </Col>
-        ))
-      : 'There are no categories available.'
+    if (!categories.length) {
+      dispatch(actGetCategories())
+    }
+  }, [dispatch, categories])
 
   return (
-    <Container>
-      <Loading status={loading} error={error}>
-        <Row>{categoriesList}</Row>
-      </Loading>
-    </Container>
+    <Loading status={loading} error={error}>
+      <GridList<TCategory>
+        records={categories}
+        renderItem={(record) => <Category {...record} />}
+      />
+    </Loading>
   )
 }
 
