@@ -7,8 +7,6 @@ import GridList from '@components/common/GridList/GridList'
 
 import Loading from '@components/fedback/Loading/Loading'
 
-import { TCategory } from '@customTypes/category'
-
 const Categories = () => {
   const dispatch = useAppDispatch()
   const { loading, error, categories } = useAppSelector(
@@ -23,7 +21,7 @@ const Categories = () => {
 
   return (
     <Loading status={loading} error={error}>
-      <GridList<TCategory>
+      <GridList
         records={categories}
         renderItem={(record) => <Category {...record} />}
       />
