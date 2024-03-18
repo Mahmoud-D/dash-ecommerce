@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '@store/hooks'
 import actGetCategories from '@store/categories/actGetCategories'
 
 import Category from '../components/eCommerce/category/Category'
+import { Loading } from '@components/fedback'
 
 import { Container, Row, Col } from 'react-bootstrap'
 
@@ -34,7 +35,9 @@ const Categories = () => {
 
   return (
     <Container>
-      <Row>{categoriesList}</Row>
+      <Loading status={loading} error={error}>
+        <Row>{categoriesList}</Row>
+      </Loading>
     </Container>
   )
 }

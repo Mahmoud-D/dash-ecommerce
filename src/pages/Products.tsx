@@ -5,8 +5,11 @@ import {
   actGetProductsByCatPrefix,
   productsCleanUp
 } from '@store/products/productsSlice'
-import { Container, Row, Col } from 'react-bootstrap'
+
 import Product from '@components/eCommerce/product/Product'
+import { Loading } from '@components/fedback'
+
+import { Container, Row, Col } from 'react-bootstrap'
 
 const Products = () => {
   const params = useParams()
@@ -36,7 +39,9 @@ const Products = () => {
 
   return (
     <Container>
-      <Row>{productsList}</Row>
+      <Loading status={loading} error={error}>
+        <Row>{productsList}</Row>
+      </Loading>
     </Container>
   )
 }
