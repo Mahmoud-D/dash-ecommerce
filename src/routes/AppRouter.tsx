@@ -4,10 +4,10 @@ import MainLayout from '@layouts/MainLayout/MainLayout'
 
 import Home from '@pages/Home'
 import AboutUs from '@pages/AboutUs'
-import Login from '@pages/Login'
 import Categories from '@pages/Categories'
-import Register from '@pages/Register'
 import Products from '@pages/Products'
+import Login from '@pages/Login'
+import Register from '@pages/Register'
 import Error from '@pages/Error'
 
 const AppRouter = () => {
@@ -40,7 +40,7 @@ const AppRouter = () => {
           element: <Register />
         },
         {
-          path: '/products/:prefix',
+          path: 'categories/products/:prefix',
           element: <Products />,
           loader: ({ params }) => {
             if (
