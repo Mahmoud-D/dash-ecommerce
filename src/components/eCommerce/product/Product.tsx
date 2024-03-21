@@ -11,7 +11,6 @@ const Product = ({ id, title, img, price }: TProduct) => {
 
   const addToCartHandler = () => {
     dispatch(addToCart(id))
-    console.log(id)
   }
   return (
     <div className={product}>
