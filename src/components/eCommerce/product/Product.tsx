@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useAppDispatch } from '@store/hooks'
 
 import { addToCart } from '@store/cart/cartSlice'
@@ -9,7 +9,7 @@ import styles from './styles.module.css'
 
 const { product, productImg } = styles
 
-const Product = ({ id, title, img, price }: TProduct) => {
+const Product = memo(({ id, title, img, price }: TProduct) => {
   const dispatch = useAppDispatch()
   const [isBtnDisabled, setIsBtnDisabled] = useState(false)
 
@@ -55,6 +55,6 @@ const Product = ({ id, title, img, price }: TProduct) => {
       </Button>
     </div>
   )
-}
+})
 
 export default Product
