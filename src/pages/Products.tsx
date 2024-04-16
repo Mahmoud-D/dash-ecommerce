@@ -12,6 +12,7 @@ import GridList from '@components/common/GridList/GridList'
 import { TProduct } from '@customTypes/products'
 
 import { Container } from 'react-bootstrap'
+import { Heading } from '@components/common'
 
 const Products = () => {
   const params = useParams()
@@ -35,6 +36,10 @@ const Products = () => {
 
   return (
     <Container>
+      <Heading>
+        {' '}
+        <span className="text-capitalize"> {params.prefix} </span> Products
+      </Heading>
       <Loading status={loading} error={error}>
         <GridList<TProduct>
           records={productsFullInfo}
