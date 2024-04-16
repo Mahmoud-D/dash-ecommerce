@@ -1,23 +1,67 @@
-import { Button } from 'react-bootstrap'
-import styles from './styles.module.css'
-const { product, productImg } = styles
+import { memo, useEffect, useState } from 'react'
+import { useAppDispatch } from '@store/hooks'
 
-const Product = () => {
+import { addToCart } from '@store/cart/cartSlice'
+import { TProduct } from '@customTypes/products'
+
+import { Button, Spinner } from 'react-bootstrap'
+import styles from './styles.module.css'
+
+const { product, productImg, maximumNotice } = styles
+
+const Product = memo(({ id, title, img, price, max, quantity }: TProduct) => {
+  const dispatch = useAppDispatch()
+  const [isBtnDisabled, setIsBtnDisabled] = useState(false)
+
+  const currentRemainingQuantity = max - (quantity ?? 0)
+  const quantityReachedToMax = currentRemainingQuantity <= 0 ? true : false
+
+  useEffect(() => {
+    if (!isBtnDisabled) {
+      return
+    }
+
+    const debounce = setTimeout(() => {
+      setIsBtnDisabled(false)
+    }, 300)
+
+    return () => clearTimeout(debounce)
+  }, [isBtnDisabled])
+
+  const addToCartHandler = () => {
+    dispatch(addToCart(id))
+    setIsBtnDisabled(true)
+  }
+
   return (
     <div className={product}>
       <div className={productImg}>
-        <img
-          src="https://eg.hm.com/assets/styles/HNM/14482498/6103a8463876770c30cdba3535b7be1f333315fe/2/image-thumb__3464789__product_listing/cb91f8f128ac2125e0ec3a008a2e8d2497d15434.jpg"
-          alt=""
-        />
+        <img src={img} />
       </div>
-      <h2>Title</h2>
-      <h3>10 EGP</h3>
-      <Button variant="info" style={{ color: 'white' }}>
-        Add to cart
+      <h2>{title}</h2>
+      <h3>{price.toFixed(2)} EGP</h3>
+      <p className={maximumNotice}>
+        {quantityReachedToMax
+          ? 'You reach to the limit'
+          : `You can add ${currentRemainingQuantity} item(s)`}
+      </p>
+      <Button
+        variant="info"
+        style={{ color: 'white' }}
+        onClick={addToCartHandler}
+        disabled={isBtnDisabled || quantityReachedToMax}
+      >
+        {isBtnDisabled ? (
+          <>
+            {' '}
+            <Spinner animation="border" size="sm" /> Loading...{' '}
+          </>
+        ) : (
+          ' Add to cart'
+        )}
       </Button>
     </div>
   )
-}
+})
 
 export default Product

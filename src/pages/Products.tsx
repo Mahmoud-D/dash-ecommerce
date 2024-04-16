@@ -1,25 +1,51 @@
-import { Container, Row, Col } from 'react-bootstrap'
-import Product from '../components/eCommerce/product/Product'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '@store/hooks'
+import { useParams } from 'react-router-dom'
+import {
+  actGetProductsByCatPrefix,
+  productsCleanUp
+} from '@store/products/productsSlice'
+
+import Product from '@components/eCommerce/product/Product'
+import { Loading } from '@components/fedback'
+import GridList from '@components/common/GridList/GridList'
+import { TProduct } from '@customTypes/products'
+
+import { Container } from 'react-bootstrap'
+import { Heading } from '@components/common'
+
 const Products = () => {
+  const params = useParams()
+  const dispatch = useAppDispatch()
+  const { loading, error, records } = useAppSelector((state) => state.products)
+
+  const cartItems = useAppSelector((state) => state.cart.items)
+
+  const productsFullInfo = records.map((el) => ({
+    ...el,
+    quantity: el.id !== undefined ? cartItems[el.id] || 0 : 0
+  }))
+
+  useEffect(() => {
+    dispatch(actGetProductsByCatPrefix(params.prefix as string))
+
+    return () => {
+      dispatch(productsCleanUp())
+    }
+  }, [dispatch, params])
+
   return (
     <Container>
-      <Row>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Product />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Product />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Product />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Product />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Product />
-        </Col>
-      </Row>
+      <Heading>
+        {' '}
+        <span className="text-capitalize"> {params.prefix} </span> Products
+      </Heading>
+      <Loading status={loading} error={error}>
+        <GridList<TProduct>
+          records={productsFullInfo}
+          renderItem={(record) => <Product {...record} />}
+        />
+      </Loading>
     </Container>
   )
 }

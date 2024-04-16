@@ -1,36 +1,35 @@
-import { Container, Row, Col } from 'react-bootstrap'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '@store/hooks'
+import actGetCategories from '@store/categories/actGetCategories'
+
 import Category from '../components/eCommerce/category/Category'
+import GridList from '@components/common/GridList/GridList'
+
+import Loading from '@components/fedback/Loading/Loading'
+import { Heading } from '@components/common'
 
 const Categories = () => {
+  const dispatch = useAppDispatch()
+  const { loading, error, categories } = useAppSelector(
+    (state) => state.categories
+  )
+
+  useEffect(() => {
+    if (!categories.length) {
+      dispatch(actGetCategories())
+    }
+  }, [dispatch, categories])
+
   return (
-    <Container>
-      <Row>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-        <Col xs={6} md={3} className="d-flex justify-content-center mb-5 mt-2">
-          <Category />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Heading>Categories</Heading>
+      <Loading status={loading} error={error}>
+        <GridList
+          records={categories}
+          renderItem={(record) => <Category {...record} />}
+        />
+      </Loading>
+    </>
   )
 }
 
